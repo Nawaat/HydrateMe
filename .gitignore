@@ -1,0 +1,32 @@
+# Dossiers à ignorer
+node_modules/
+dist/
+coverage/
+
+# Fichiers à ignorer
+*.log
+*.sqlite
+*.env
+*.DS_Store
+
+# Fichiers de configuration locaux
+.env.local
+.env.test.local
+
+# Fichiers de cache et de build
+.cache/
+.build/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Dépendances yarn.lock (si vous utilisez Yarn)
+yarn.lock
+
+# Dépendances package-lock.json (si vous utilisez npm)
+package-lock.json
+
+# Fichiers de sauvegarde de l'éditeur
+*.swp
+*~
