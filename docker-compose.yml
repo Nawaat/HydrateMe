@@ -1,5 +1,16 @@
 version: "3"
 services:
+  Api:
+      build: .
+      ports:
+        - "8001:8001"
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      environment:
+        - NODE_ENV=development
+      command: npm run start
+
 # ===== DOCKER DIND =====
   dind:
     image: docker:dind
