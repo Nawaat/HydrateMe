@@ -1,0 +1,47 @@
+pipeline {
+
+    environment {
+        registry = "nawat1/hydrateme"
+        registryCredential = 'dockerHub'
+        dockerImage = ''
+        name = 'service-search'
+        sshHost = '51.83.69.138'
+        sshUser = 'nawat'
+        sshPort = '55555'
+        repoDir = '~/hydrateme'
+        branchName = 'deployment'
+        // branchName = 'IMIA-314-Deploy-searchService'
+        HOME = "${env.WORKSPACE}"
+    }
+
+    agent any
+
+    triggers {
+        gitlab( 
+        triggerOnPush:true, 
+        triggerOnMergeRequest: true,             
+        triggerOpenMergeRequestOnPush: 'both',
+        branchFilterType: 'All',
+        branchFilterName: 'master')
+    }
+
+    stages {
+
+        stage('Cleanup Workspace') {
+            steps {
+               script {
+                    updateGitlabCommitStatus(name: 'Cleanup Workspace', state:'pending')
+                    try {
+                        cleanWs()
+                        updateGitlabCommitStatus(name: 'Cleanup Workspace', state:'success')
+                    } catch (Exception e) {
+                        echo 'Failed to cleanup workspace'
+                        updateGitlabCommitStatus(name: 'Cleanup Workspace', state:'failed')
+                        throw e
+                    }
+                }
+            }   
+        } 
+    }
+
+}

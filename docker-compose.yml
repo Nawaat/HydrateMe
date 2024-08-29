@@ -1,6 +1,6 @@
 version: "3"
 services:
-  Api:
+  hydrateme:
       build: .
       ports:
         - "8001:8001"
@@ -11,42 +11,9 @@ services:
         - NODE_ENV=development
       command: npm run start
 
-# ===== DOCKER DIND =====
-  dind:
-    image: docker:dind
-    privileged: true
-    restart: always
-    networks:
-      docker:
-        aliases:
-          - docker
-    ports:
-      - 2377:2376
-    tty: true
-    volumes:
-      - jenkins_data:/var/jenkins_home
-      - jenkins-docker-certs:/certs/client
-    environment:
-      - DOCKER_TLS_CERTDIR=/certs
-
-  # ===== JENKINS =====
-  jenkins: 
-    container_name: jenkins-immo
-    build:
-      context: ./
-      dockerfile: jenkins-dockerfile
-    restart: on-failure
-    networks:
-      - docker
-    ports: 
-      - 8094:8080
-      - 50000:50000
-    tty: true
-    volumes:
-      - jenkins_data:/var/jenkins_home
-      - jenkins-docker-certs:/certs/client:ro
-    environment:
-      - DOCKER_HOST=tcp://docker:2376
-      - DOCKER_CERT_PATH=/certs/client
-      - DOCKER_TLS_VERIFY=1
-
+networks: 
+    docker:
+    
+volumes:
+    jenkins-data:
+    jenkins-docker-certs:
